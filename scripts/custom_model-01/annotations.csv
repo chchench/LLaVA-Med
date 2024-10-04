@@ -1,0 +1,11 @@
+image_filename,text,patient_id,diagnosis,metadata
+fake_png/image_001.png,"Normal chest X-ray with no signs of pneumonia.",1001,Normal,"{""age"": 45, ""gender"": ""Male"", ""modality"": ""X-ray""}"
+fake_png/image_002.png,"Presence of infiltrates in the left lower lobe.",1002,Pneumonia,"{""age"": 60, ""gender"": ""Female"", ""modality"": ""CT""}"
+fake_png/image_003.png,"Fracture detected in the right femur shaft.",1003,Fracture,"{""age"": 30, ""gender"": ""Male"", ""modality"": ""X-ray""}"
+fake_png/image_004.png,"Enlarged cardiac silhouette observed.",1004,Cardiomegaly,"{""age"": 55, ""gender"": ""Female"", ""modality"": ""X-ray""}"
+fake_png/image_005.png,"Lung nodules present in both upper lobes.",1005,Nodules,"{""age"": 50, ""gender"": ""Male"", ""modality"": ""CT""}"
+fake_png/image_006.png,"No evidence of acute intracranial hemorrhage.",1006,Normal,"{""age"": 65, ""gender"": ""Female"", ""modality"": ""MRI""}"
+fake_png/image_007.png,"Diffuse osteopenia noted in vertebral bodies.",1007,Osteopenia,"{""age"": 70, ""gender"": ""Male"", ""modality"": ""DEXA""}"
+fake_png/image_008.png,"Mild hepatomegaly with no focal lesions.",1008,Hepatomegaly,"{""age"": 40, ""gender"": ""Female"", ""modality"": ""Ultrasound""}"
+fake_png/image_009.png,"Pulmonary embolism confirmed in the right pulmonary artery.",1009,Pulmonary Embolism,"{""age"": 35, ""gender"": ""Male"", ""modality"": ""CT Angiography""}"
+fake_png/image_010.png,"Normal brain MRI with no abnormalities detected.",1010,Normal,"{""age"": 28, ""gender"": ""Female"", ""modality"": ""MRI""}"
