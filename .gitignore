@@ -1,3 +1,5 @@
 __pycache__
 *.pyc
 *.egg-info
+scripts/custom_model-01/cache/**
+scripts/custom_model-01/results/**
