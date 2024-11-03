@@ -56,16 +56,6 @@ def encode_image(image_path):
 
 def submit_prompt(prompt, model_name, temperature, top_p, max_tokens, controller_url, image_path=None):
 
-    print('Prompt data')
-    print(f'  controller_url:  {controller_url}')
-    print(f'  model_name:      {model_name}')
-    print(f'  temperature:     {temperature}')
-    print(f'  top_p:           {top_p}')
-    print(f'  max_tokens:      {max_tokens}')
-    print(f'  prompt:          {prompt}')
-    print(f'  image_path:      {image_path}')
-    print('')
-
     try:
 
         # pload = {'model': 'llava-med-v1.5-mistral-7b', 
@@ -86,22 +76,21 @@ def submit_prompt(prompt, model_name, temperature, top_p, max_tokens, controller
         if image_path:
             image_data = encode_image(image_path)
 
-            print(f'Encoded data:               {abbreviate_string(image_data, 20)}')
+            print(f'Encoded data:         {abbreviate_string(image_data, 20)}')
 
             prompt_data["prompt"] = f'[INST] <image>\n{prompt} [/INST]'
             prompt_data["images"] = [image_data]  # Assuming API accepts a list of images in base64 format
 
         complete_controller_url = controller_url + "/get_worker_address"
-        print(f'Complete controller URL:    {complete_controller_url}')
 
         response = requests.post(complete_controller_url, json=prompt_data)
-
         worker_address = response.json()["address"]
-        print(f'Responding worker address:  {worker_address}')
 
         if worker_address:
             complete_worker_url = worker_address + "/worker_generate_stream"
-            print(f'Complete worker URL:        {complete_worker_url}')
+            print(f'Complete worker URL:  {complete_worker_url}')
+            if image_path:
+                print(f'Image path:           {image_path}')
             print('')
 
             response = requests.post(complete_worker_url, headers=headers, json=prompt_data)
@@ -152,24 +141,16 @@ def main():
 
     model_name = models[model_index]
 
-    print(f"Using model: {model_name}")
-    while True:
-        prompt = input("Enter your prompt (or type 'exit' to quit): ")
-        if prompt.lower() == 'exit':
-            break
 
-        image_path = input("Enter the path to an image file to analyze (or press Enter to skip): ").strip()
-        if image_path == "":
-            image_path = None
-
+    def execute_query(the_prompt, the_file = None):
         response = submit_prompt(
-            prompt,
+            the_prompt,
             model_name,
             args.temperature,
             args.top_p,
             args.max_tokens,
             args.controller_url,
-            image_path
+            the_file
         )
 
         # Extract the content between the <INST> and </INST> tags
@@ -186,6 +167,27 @@ def main():
 
         print(f'Response for prompt "{cleaned_inst_text}":')
         print(f'\n{after_inst_text}\n')
+
+
+    while True:
+        prompt = input("Enter your prompt (or type 'exit' to quit): ")
+        if prompt.lower() == 'exit':
+            break
+
+        image_path = input("Enter the path to an image file to analyze (or press Enter to skip): ").strip()
+        if image_path == "":
+            image_path = None
+            execute_query(prompt)
+            continue
+        
+        image_paths = []
+        if os.path.isdir(image_path):
+            image_paths = [os.path.join(image_path, f) for f in os.listdir(image_path) if os.path.isfile(os.path.join(image_path, f))]
+        else:
+            image_paths = [ image_path ]
+
+        for file in image_paths:
+            execute_query(prompt, file)
 
 
 if __name__ == "__main__":
